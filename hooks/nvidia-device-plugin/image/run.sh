@@ -26,7 +26,7 @@ cp -r /nvidia-device-plugin/* /rootfs/nvidia-device-plugin
 ln -sf /nvidia-device-plugin/nvidia-device-plugin.service /rootfs/etc/systemd/system/nvidia-device-plugin.service
 
 # Save the environment to be passed on to the systemd unit
-env | grep NVIDIA_DEVICE_PLUGIN > /rootfs/nvidia-device-plugin/environment
+(env | grep NVIDIA_DEVICE_PLUGIN > /rootfs/nvidia-device-plugin/environment) || true
 
 # Kickoff host systemd unit that runs the setup scripts
 #   'systemctl' within this docker container uses the mounted /run/systemd/*
