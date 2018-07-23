@@ -1,4 +1,4 @@
-# NVIDIA GPU Driver and Device Plugin Installation
+# NVIDIA GPU Driver and DevicePlugin Installation
 
 ## Summary
 
@@ -60,7 +60,7 @@ This kops hook was developed against the following version combinations.
 | 1.9.1         | 1.11               | deviceplugin | kope.io/k8s-1.10-debian-stretch-amd64-hvm-ebs-2018-05-27
 | 1.9.1         | 1.10               | legacy       | kope.io/k8s-1.10-debian-stretch-amd64-hvm-ebs-2018-05-27
 
-## Using this Device Plugin
+## Using this DevicePlugin
 
 ### Create a Cluster with GPU Nodes
 
@@ -73,7 +73,7 @@ kops create cluster gpu.example.com \
   --kubernetes-version 1.11.0
 ```
 
-### Enable the Kops Installation Hook and Device Plugins
+### Enable the Kops Installation Hook and DevicePlugins
 
 This should be safe to do for all machines, because the hook auto-detects if
 the machine is an AWS GPU instancetype and will NO-OP otherwise.  Choose
@@ -101,9 +101,9 @@ spec:
 ###   deviceplugins are not enabled by default.
 # kubelet:
 #   featureGates:
-#     # Enable Device Plugins
+#     # Enable DevicePlugins
 #     DevicePlugins: "true"
-#     # Disable Accelerators (may interfere with Device Plugins)
+#     # Disable Accelerators (may interfere with DevicePlugins)
 #     Accelerators: "false"
 ```
 
@@ -125,7 +125,7 @@ spec:
         NVIDIA_DEVICE_PLUGIN_MODE: legacy
   kubelet:
     featureGates:
-      # Disable Device Plugins (may interfere with Device Plugins)
+      # Disable DevicePlugins (may interfere with DevicePlugins)
       DevicePlugins: "false"
       # Enable Accelerators
       Accelerators: "true"
@@ -138,9 +138,9 @@ kops update cluster gpu.example.com --yes
 kops rolling-update cluster gpu.example.com --yes
 ```
 
-### Deploy the Daemonset for the Nvidia Device Plugin
+### Deploy the Daemonset for the Nvidia DevicePlugin
 
-Only for DevicePlugin GPU Mode, load the device plugin daemonset for your
+Only for DevicePlugin GPU Mode, load the deviceplugin daemonset for your
 specific environment.  This is not required for the Legacy Accelerators GPU
 Mode.
 
@@ -197,10 +197,18 @@ EOF
 #### Validate that GPUs are working
 
 ```bash
+# Check that nodes are detected to have GPUs
+kubectl describe nodes|grep -E 'gpu:\s.*[1-9]'
+
+# Check the logs of the Tensorflow Container to ensure that it ran
+kubectl logs tf-gpu
+
 # Show GPU info from within the pod
+#   Only works in DevicePlugin mode
 kubectl exec -it tf-gpu nvidia-smi
 
 # Show Tensorflow detects GPUs from within the pod.
+#   Only works in DevicePlugin mode
 kubectl exec -it tf-gpu -- \
   python -c 'from tensorflow.python.client import device_lib; print(device_lib.list_local_devices())'
 ```
