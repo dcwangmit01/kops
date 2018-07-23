@@ -34,7 +34,7 @@ Using this hook indicates that you agree to the Nvidia
 Although this hook *may* work among many combinatorial versions of software and
 images, it has only been tested with the following:
 
-* kops: **v1.9**
+* kops: **1.9**
 * kubernetes: 1.10, **1.11**
 * OS Image: **`kope.io/k8s-1.10-debian-stretch-amd64-hvm-ebs-2018-05-27`**
   * This is most certainly not the default image for kops.  The OS image must
@@ -140,6 +140,8 @@ kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v1.
 # For kubernetes 1.11
 kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v1.11/nvidia-device-plugin.yml
 ```
+# ^ TODO: Ensure tolerations
+#   kubectl patch
 
 ### Validate that GPUs are Working
 
@@ -163,6 +165,7 @@ spec:
         #   'alpha.kubernetes.io/nvidia-gpu'
   tolerations:
   # This toleration will allow the gpu hook to run anywhere
+  #   By default this is permissive in case you have tainted your GPU nodes.
   - operator: "Exists"
   # ^ If you have a specific taint to target, comment out the above and modify
   #   the example below
