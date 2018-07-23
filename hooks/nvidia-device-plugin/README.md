@@ -139,9 +139,12 @@ kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v1.
 
 # For kubernetes 1.11
 kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v1.11/nvidia-device-plugin.yml
+
+# (Optional) Set permissive toleration to allow daemonset to run anywhere.
+#   By default this is permissive in case you have tainted your GPU nodes.
+kubectl patch daemonset nvidia-device-plugin-daemonset --namespace kube-system \
+  -p '{ "spec": { "template": { "spec": { "tolerations": [ { "operator": "Exists" } ] } } } }'
 ```
-# ^ TODO: Ensure tolerations
-#   kubectl patch
 
 ### Validate that GPUs are Working
 
@@ -160,6 +163,8 @@ spec:
     imagePullPolicy: IfNotPresent
     resources:
       limits:
+        memory: 1024Mi
+        # ^ Set memory in case default limits are set low
         nvidia.com/gpu: 1 # requesting 1 GPUs
         # ^ For Legacy Accelerators mode this key must be renamed
         #   'alpha.kubernetes.io/nvidia-gpu'
