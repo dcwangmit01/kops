@@ -1,4 +1,4 @@
-# NVIDIA Driver and Device Plugin Installation
+# NVIDIA GPU Driver and Device Plugin Installation
 
 ## Summary
 
@@ -49,6 +49,16 @@ images, it has only been tested with the following:
   * This is due to the fact that it uses an AWS discovery mechanism to
     determine node instancetype, and subsequently install the correct drivers and
     configure the optimal settings for the GPU chipsets.
+
+### Test Matrix
+
+This kops hook was developed against the following version combinations.
+
+| Kops Version  | Kubernetes Version | GPU Mode     | OS Image |
+| ------------- | ------------------ | ------------ | -------- |
+| 1.10-beta.1   | 1.10               | deviceplugin | kope.io/k8s-1.10-debian-stretch-amd64-hvm-ebs-2018-05-27
+| 1.9.1         | 1.11               | deviceplugin | kope.io/k8s-1.10-debian-stretch-amd64-hvm-ebs-2018-05-27
+| 1.9.1         | 1.10               | legacy       | kope.io/k8s-1.10-debian-stretch-amd64-hvm-ebs-2018-05-27
 
 ## Using this Device Plugin
 
