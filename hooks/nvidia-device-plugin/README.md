@@ -59,6 +59,7 @@ kops create cluster gpu.example.com \
   --zones us-east-1c \
   --node-size p2.xlarge \
   --node-count 1 \
+  --image kope.io/k8s-1.10-debian-stretch-amd64-hvm-ebs-2018-05-27 \
   --kubernetes-version 1.11.0
 ```
 
@@ -78,7 +79,7 @@ This mode is:
 For Kubernetes >= 1.11.0 or clusters supporting DevicePlugins
 
 ```yaml
-# > kops edit cluster gpu.example.com # (or instancegroup)
+# > kops edit instancegroup nodes
 
 spec:
   image: kope.io/k8s-1.10-debian-stretch-amd64-hvm-ebs-2018-05-27
@@ -103,7 +104,7 @@ GPU mode is equivalent to the original [GPU hook](/docs/gpu.md).
 Accelerators are deprecated in `Kubernetes >= 1.11.0`.
 
 ```yaml
-# > kops edit cluster gpu.example.com # (or instancegroup)
+# > kops edit instancegroup nodes
 
 spec:
   image: kope.io/k8s-1.10-debian-stretch-amd64-hvm-ebs-2018-05-27
